@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style id="position-and-color">
+			#d1, #d2 {
+				width: 500px;
+				height: 200px;
+			}
+				
+			#d3, #d4 {
+				width: 300px;
+				height: 150px;
+			}
+			
+			#d1 {
+				background-color: rgb(100,100,100);
+			}
+			
+			#d2 {
+				background-color: rgb(0,255,0);
+				margin-top: -20px;
+				margin-left: 20px;
+			}
+				
+			#d3 {
+				background-color: rgb(255,0,0);
+				margin-top: 20px;
+				margin-left: 50px;
+			}
+					
+			#d4 {
+				background-color: rgb(0,0,255);
+				margin-top: -120px;
+				margin-left: 150px;
+			}
+			
+			input[type=text] {
+				width: 50px;
+			}
+		</style>
+	</head>
+	<body ng-app="StackingContextExample">
+		<demo-div gid="d1">
+			<demo-div gid="d3"></demo-div>
+		</demo-div>
+		<demo-div gid="d2">
+			<demo-div gid="d4"></demo-div>
+		</demo-div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+		<script>
+			var app = angular.module("StackingContextExample", []);
+			
+			app.directive("demoDiv", function() {
+				return {
+					restrict: "E",
+					replace: true,
+					transclude: true,
+					scope: {
+						gid: "@"
+					},
+					template: 
+						'<div id="{{::gid}}" style="z-index: {{zIndex}}; position: {{isPositioned ? \'relative\' : \'initial\'}}">' +
+							'[#{{::gid}}]' +
+							'<br/>z-index: <input type="text" ng-model="zIndex" />' +
+							'<br/>position: <input type="checkbox" ng-model="isPositioned" />' +
+							'<ng-transclude></ng-transclude>' +
+						'</div>',
+					controller: function($scope) {
+						//$scope.$watch('zIndex', function(newValue, oldValue) {
+						//	$scope.isPositioned = !!newValue;
+						//});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
